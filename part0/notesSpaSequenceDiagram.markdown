@@ -10,9 +10,7 @@
       Client->>+Server: POST /exampleapp/new_note_spa
       note left of Server: Datos: {note: "nueva nota", date: "2024-25-11"}
       Server-->>-Client: 201 Created (Nota Creada)
-      note right of Client: {
-          message: "note created"
-      }
-      note over Client: El navegador hace append del nuevo registro y lo incluye dentro del ul. Limpia el formulario.
+      note over Client: Respuesta: {"message": "note created"}
+      note over Client: El navegador:<br/>1. Hace append del nuevo registro<br/>2. Lo incluye dentro del ul<br/>3. Limpia el formulario
       
 ```
