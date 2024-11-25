@@ -1,29 +1,33 @@
 ```mermaid
-sequenceDiagram
-    participant browser
-    participant server
-
-    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/notes
-    activate server
-    server-->>browser: HTML document
-    deactivate server
-
-    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/main.css
-    activate server
-    server-->>browser: the css file
-    deactivate server
-
-    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/main.js
-    activate server
-    server-->>browser: the JavaScript file
-    deactivate server
-
-    Note right of browser: The browser starts executing the JavaScript code that fetches the JSON from the server
-
-    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
-    activate server
-    server-->>browser: [{ "content": "HTML is easy", "date": "2023-1-1" }, ... ]
-    deactivate server
-
-    Note right of browser: The browser executes the callback function that renders the notes
+  sequenceDiagram
+      autonumber
+      participant Client as Navegador
+      participant Server as Servidor
+      
+      note over Client,Server: Proceso de creación de notas
+      
+      %% Crear nueva nota
+      Client->>+Server: POST /exampleapp/notes
+      note left of Server: Datos: {note: "nueva nota"}
+      Server-->>-Client: 302 Found (Redirección)
+      
+      %% Recargar la página
+      Client->>+Server: GET /exampleapp/notes
+      Server-->>-Client: HTML Document
+      
+      %% Obtener recursos estáticos
+      par Recursos en paralelo
+          Client->>+Server: GET /exampleapp/main.css
+          Server-->>-Client: CSS File (200 OK)
+          and
+          Client->>+Server: GET /exampleapp/main.js
+          Server-->>-Client: JavaScript File (200 OK)
+      end
+      
+      %% Obtener datos JSON
+      note over Client: El JavaScript se ejecuta y solicita los datos
+      Client->>+Server: GET /exampleapp/data.json
+      Server-->>-Client: [{content: "nueva nota", date: "2024-25-11"}, ...]
+      
+      note over Client: El navegador renderiza las notas
 ```
