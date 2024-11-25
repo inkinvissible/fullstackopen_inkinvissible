@@ -4,7 +4,7 @@
       participant Client as Navegador
       participant Server as Servidor
       
-      note over Client,Server: Proceso de creación de notas
+      note over Client,Server: Proceso de creación de notas, el hostname es:studies.cs.helsinki.fi
       
       %% Crear nueva nota
       Client->>+Server: POST /exampleapp/notes
