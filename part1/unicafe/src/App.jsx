@@ -1,21 +1,58 @@
 import { useState } from 'react'
 
-const Title = ({title}) => <h1>{title}</h1>
+const Title = ({ title }) => <h1>{title}</h1>
 
-const Button = ({handleClick, text}) => <button onClick={handleClick}>{text}</button>
+const Button = ({ handleClick, text }) => <button onClick={handleClick}>{text}</button>
 
-
-const StatisticLine = ({text, value}) => {
-if (text === "positive"){
-  return <p>{text}: {value} %</p>
+const StatisticsTable = ({ values: { good, neutral, bad, total, average, positive } }) => {
+  return(
+    <table>
+        <tbody>
+          <StatisticLine text="good" value={good} />
+          <StatisticLine text="neutral" value={neutral} />
+          <StatisticLine text="bad" value={bad} />
+          <StatisticLine text="all" value={total} />
+          <StatisticLine text="average" value={average} />
+          <StatisticLine text="positive" value={positive} />
+        </tbody>
+      </table>
+  )
 }
- return <p>{text}: {value}</p>
+
+const StatisticLine = ({ text, value }) => {
+  if (text === "positive") {
+    return (
+      <>
+        <tr>
+          <td>{text}</td>
+          <td>{value}%</td>
+        </tr>
+      </>
+    )
+  }
+  return (
+    <>
+      <tr>
+        <td>{text}</td>
+        <td>{value}</td>
+      </tr>
+    </>
+  )
 }
 
 const Statistics = ({ good, neutral, bad, all }) => {
   let total = good + neutral + bad
   let average = ((good - bad) / total)
   let positive = (good / total) * 100
+
+  const statistics ={
+    good: good,
+    neutral: neutral,
+    bad: bad,
+    total: total, 
+    average: average,
+    positive: positive
+  }
 
   if (all.length === 0) {
     return (
@@ -29,13 +66,7 @@ const Statistics = ({ good, neutral, bad, all }) => {
   return (
     <div>
       <Title title="statistics" />
-      <StatisticLine text="good" value={good} />
-      <StatisticLine text="neutral" value={neutral} />
-      <StatisticLine text="bad" value={bad} />
-      <StatisticLine text="all" value={total} />
-      <StatisticLine text="average" value={average} />
-      <StatisticLine text="positive" value={positive} />
-
+      <StatisticsTable values={statistics} />
     </div>
 
   )
