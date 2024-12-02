@@ -12,24 +12,32 @@ const App = () => {
     'The only way to go fast, is to go well.'
   ]
 
-  const [selected, setSelected] = useState(0)
+  const [selected, setSelected] = useState(0);
+  const [votes, setVotes] = useState(Array(anecdotes.length).fill(0));
 
-  function getRandomInt(max){
-    return Math.floor(Math.random() * max)
+  function getRandomInt(max) {
+    return Math.floor(Math.random() * max);
   }
 
-  const nextOnClick = () =>{
+  const nextOnClick = () => {
     let selectedNum = getRandomInt(anecdotes.length);
     setSelected(selectedNum);
-  }
+  };
+
+  const voteOnClick = () => {
+    const newVotes = [...votes];
+    newVotes[selected] += 1;
+    setVotes(newVotes);
+  };
 
   return (
     <div>
-      {anecdotes[selected]}
-      <br />
+      <p>{anecdotes[selected]}</p>
+      <p>has {votes[selected]} votes</p>
+      <button onClick={voteOnClick}>vote</button>
       <button onClick={nextOnClick}>next anecdote</button>
     </div>
-  )
-}
+  );
+};
 
-export default App
+export default App;
