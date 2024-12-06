@@ -1,12 +1,17 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
+import Notification from './components/Notification'
 import personService from './services/persons'
+
 
 const App = () => {
   const [persons, setPersons] = useState([])
+  const [newName, setNewName] = useState('')
+  const [newNumber, setNewNumber] = useState('')
+  const [searchPerson, setSearchPerson] = useState('')
+  const [notificationMessage, setNotificationMessage] = useState(null)
 
   useEffect(() => {
     personService.getAll()
@@ -16,9 +21,7 @@ const App = () => {
   }, [])
 
 
-  const [newName, setNewName] = useState('')
-  const [newNumber, setNewNumber] = useState('')
-  const [searchPerson, setSearchPerson] = useState('')
+
 
 
 
@@ -40,6 +43,10 @@ const App = () => {
           setPersons(persons.concat(returnedPerson))
           setNewName('')
           setNewNumber('')
+          setNotificationMessage(`${newPerson.name} was registered successfully`)
+          setTimeout(() => {
+            setNotificationMessage(null)
+          }, 5000)
         })
 
 
@@ -52,9 +59,20 @@ const App = () => {
           setPersons(persons.map(person => person.id !== changeNumberPerson.id ? person : returnedPerson))
           setNewName('')
           setNewNumber('')
+          setNotificationMessage(`${returnedPerson.name}'s phone was changed successfully`)
+          setTimeout(() => {
+            setNotificationMessage(null)
+          }, 5000)
         }).catch(error => {
-          console.error("Error al actualizar número", error);
-          alert(`No se pudo actualizar el número ${newNumber}`)
+          setNotificationMessage(`An error has ocurred. ${newName} has already been removed from the server`)
+          
+          setTimeout(() => {
+            setNotificationMessage(null)
+          }, 5000)
+
+          setNewName('')
+          setNewNumber('')
+
         })
       }
     } else {
@@ -73,7 +91,10 @@ const App = () => {
           setPersons(personsCopy.filter(p => p.id !== id))
         })
         .catch(() => {
-          alert('Could not delete the person')
+          setNotificationMessage(`An error has ocurred. ${person.name} has already been removed from the server`)
+          setTimeout(() => {
+            setNotificationMessage(null)
+          }, 5000)
         })
     }
   }
@@ -94,7 +115,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-
+      <Notification message={notificationMessage} />
       <Filter searchPerson={searchPerson} handleSearchChange={handleSearchChange} />
 
       <h2>Add a new</h2>
