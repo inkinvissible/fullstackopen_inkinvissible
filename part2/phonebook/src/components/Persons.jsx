@@ -1,6 +1,9 @@
 import Person from './Person'
 
 const Persons = ({ personsToShow, deletePerson }) => {
+  if (!personsToShow){
+    return null
+  }
   return (
     <div>
       {personsToShow.map(person => (
