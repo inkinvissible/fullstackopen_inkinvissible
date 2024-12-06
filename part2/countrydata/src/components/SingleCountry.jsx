@@ -13,8 +13,19 @@ const SingleCountry = ({ country }) => {
                 </ul>
                 <img src={country.flags.png} alt={`Bandera de ${country.name.common}`} />
 
-                <h2>Weather in {country.capital}</h2>
-                
+                {country.weather && (
+                <div>
+                    <h2>Weather in {country.capital}</h2>
+                    <p>Temperature: {country.weather.temperature}°C</p>
+                    <p>Condition: {country.weather.condition}</p>
+                    <p>Wind Speed: {country.weather.windSpeed} km/h</p>
+                    <img 
+                        src={country.weather.icon} 
+                        alt={country.weather.condition}
+                    />
+                </div>
+            )}
+
         </>
     )
 }
