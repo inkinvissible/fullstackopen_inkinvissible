@@ -4,7 +4,7 @@ const Notification = ({ message }) => {
     }
 
     return (
-        <div className={message.includes('error') ? 'notificationError' : 'notification'}>
+        <div className={message.toLowerCase().includes('error') ? 'notificationError' : 'notification'}>
             <p>{message}</p>
         </div>
     )

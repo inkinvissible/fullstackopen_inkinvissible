@@ -48,6 +48,9 @@ const App = () => {
             setNotificationMessage(null)
           }, 5000)
         })
+        .catch(error =>{
+          setNotificationMessage(`Error: ${error.response.data.error}`)
+        })
 
 
     } else if ((isRegisteredPerson) && (!isRegisteredNumber)) {
