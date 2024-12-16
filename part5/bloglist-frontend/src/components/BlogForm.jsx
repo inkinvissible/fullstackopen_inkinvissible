@@ -1,8 +1,7 @@
-import { useState } from "react"
+import { useState } from 'react'
 import blogService from '../services/blogs'
 
-const BlogForm = ({ blogs, setBlogs, notificationObject }) => {
-  const { errorNotification, setErrorNotification, notification, setNotification } = notificationObject
+const BlogForm = ({ blogs, setBlogs, notificationRef }) => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
@@ -19,20 +18,19 @@ const BlogForm = ({ blogs, setBlogs, notificationObject }) => {
       setAuthor('')
       setTitle('')
       setUrl('')
-      setNotification(`New blog created successfully. ${newBlog.title} by ${newBlog.author}`)
+      notificationRef.current.setNotification(`New blog created successfully. ${newBlog.title} by ${newBlog.author}`)
       setTimeout(() => {
-        setNotification(null)
+        notificationRef.current.setNotification(null)
       }, 5000)
 
 
       const newBlogArray = blogs.concat(newBlogCreated)
       setBlogs(newBlogArray)
     } catch (e) {
-      setErrorNotification(`Could not create blog. ${newBlog.title} by ${newBlog.author}`)
+      notificationRef.current.setErrorNotification(`Could not create blog. ${newBlog.title} by ${newBlog.author}`)
       setTimeout(() => {
-        setErrorNotification(null)
+        notificationRef.current.setErrorNotification(null)
       }, 5000)
-      console.log(e);
 
     }
   }

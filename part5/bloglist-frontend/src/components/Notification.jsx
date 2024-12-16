@@ -1,5 +1,13 @@
-const Notification = ({ notificationObject }) => {
-  const { errorNotification, notification } = notificationObject
+import { forwardRef, useState, useImperativeHandle } from 'react'
+
+const Notification = forwardRef((_, ref) => {
+  const [errorNotification, setErrorNotification] = useState('')
+  const [notification, setNotification] = useState('')
+
+  useImperativeHandle(ref, () => ({
+    setErrorNotification,
+    setNotification
+  }))
 
   const errorNotificationStyle = {
     color: 'red',
@@ -27,6 +35,8 @@ const Notification = ({ notificationObject }) => {
   }
 
   return null
-}
+})
+
+Notification.displayName = 'Notification'
 
 export default Notification
