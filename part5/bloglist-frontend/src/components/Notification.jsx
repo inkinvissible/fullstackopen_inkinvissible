@@ -27,11 +27,11 @@ const Notification = forwardRef((_, ref) => {
   }
 
   if (errorNotification) {
-    return <div style={errorNotificationStyle}>{errorNotification}</div>
+    return <div data-testid="notification" style={errorNotificationStyle}>{errorNotification}</div>
   }
 
   if (notification) {
-    return <div style={notificationStyle}>{notification}</div>
+    return <div data-testid="notification" style={notificationStyle}>{notification}</div>
   }
 
   return null

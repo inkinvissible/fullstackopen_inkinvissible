@@ -27,13 +27,13 @@ const Login = ({ user, setUser, notificationRef }) => {
 
   return (
     <form onSubmit={handleLogin}>
-      <div>
+      <div data-testid='usernameElement'>
         <p>Username</p>
-        <input type="text" value={username} name="Username" onChange={({ target }) => setUsername(target.value)} />
+        <input data-testid='username' type="text" value={username} name="Username" onChange={({ target }) => setUsername(target.value)} />
       </div>
-      <div>
+      <div data-testid='passwordElement'>
         <p>Password</p>
-        <input type="password" value={password} name="Password" onChange={({ target }) => setPassword(target.value)} />
+        <input data-testid='password' type="password" value={password} name="Password" onChange={({ target }) => setPassword(target.value)} />
       </div>
       <button type="submit">Login</button>
     </form>

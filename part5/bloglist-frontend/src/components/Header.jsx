@@ -8,10 +8,10 @@ const Header = ({ titleDisplay, titleContent, pDisplay, pContent }) => {
   )
 }
 
-Header.PropTypes = {
-  titleDisplay: PropTypes.string.isRequired,
+Header.propTypes = {
+  titleDisplay: PropTypes.string,
   titleContent: PropTypes.string.isRequired,
-  pDisplay: PropTypes.string.isRequired,
-  pContent: PropTypes.string.isRequired,
+  pDisplay: PropTypes.string,
+  pContent: PropTypes.string,
 }
 export default Header

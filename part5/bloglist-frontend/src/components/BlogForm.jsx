@@ -38,9 +38,9 @@ const BlogForm = ({ blogs, setBlogs, notificationRef }) => {
   return (
     <>
       <form onSubmit={handleCreateBlogs}>
-        <p>Title: <input value={title} type="text" onChange={({ target }) => setTitle(target.value)} /></p>
-        <p>Author: <input value={author} type="text" onChange={({ target }) => setAuthor(target.value)} /></p>
-        <p>URL: <input value={url} type="text" onChange={({ target }) => setUrl(target.value)} /></p>
+        <p>Title: <input data-testid='title' placeholder='Title...' value={title} type="text" onChange={({ target }) => setTitle(target.value)} /></p>
+        <p>Author: <input data-testid='author' placeholder='Author...' value={author} type="text" onChange={({ target }) => setAuthor(target.value)} /></p>
+        <p>URL: <input data-testid='url' placeholder='URL...' value={url} type="text" onChange={({ target }) => setUrl(target.value)} /></p>
         <button type="submit">Crear blog</button>
       </form>
     </>

@@ -58,11 +58,11 @@ const Blog = ({ blog, updateBlog, notificationRef, user }) => {
 
   return (
     < div style={boxStyling} >
-      {blog.title} {blog.author} <button onClick={toggleVisibility}>{visible ? 'hide' : 'show'}</button>
-      <div style={visible ? show : hide}>
+      <p className='blogTitleAuthor'>{blog.title} {blog.author} <button  onClick={toggleVisibility}>{visible ? 'hide' : 'show'}</button></p>
+      <div className='blogDetails' style={visible ? show : hide}>
         <ul>
           <li>URL: {blog.url}</li>
-          <li>Likes: {blog.likes}  <button onClick={addLike}>like</button></li>
+          <li>Likes: {blog.likes}  <button data-testid='likeBtn' className='likeBtn' onClick={addLike}>like</button></li>
           <li>Author: {blog.author}</li>
         </ul>
         {user.username === blog.author ? <button onClick={removeBlog}>remove</button> : ''}
