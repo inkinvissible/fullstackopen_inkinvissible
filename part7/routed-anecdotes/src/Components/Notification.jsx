@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 const Notification = ({notification}) => {
     const noDisplay = { display: 'none' }
     const style = {
@@ -12,6 +13,11 @@ const Notification = ({notification}) => {
             <p>{notification}</p>
         </div>
     )
+}
+
+// Props validation
+Notification.propTypes = {
+    notification: PropTypes.string
 }
 
 export default Notification
