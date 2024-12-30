@@ -1,8 +1,8 @@
-import { useState } from 'react'
-import { useResource } from './hooks'
+import { useState } from "react"
+import { useResource } from "./hooks"
 
 const useField = (type) => {
-  const [value, setValue] = useState('')
+  const [value, setValue] = useState("")
 
   const onChange = (event) => {
     setValue(event.target.value)
@@ -11,34 +11,29 @@ const useField = (type) => {
   return {
     type,
     value,
-    onChange
+    onChange,
   }
 }
 
-
-
 const App = () => {
-  const content = useField('text')
-  const name = useField('text')
-  const number = useField('text')
+  const content = useField("text")
+  const name = useField("text")
+  const number = useField("text")
 
-  const [notes, noteService] = useResource('http://localhost:3005/notes')
-  const [persons, personService] = useResource('http://localhost:3005/persons')
-
+  const [notes, noteService] = useResource("http://localhost:3005/notes")
+  const [persons, personService] = useResource("http://localhost:3005/persons")
 
   const handleNoteSubmit = (event) => {
     event.preventDefault()
     noteService.create({ content: content.value })
-    content.onChange({ target: { value: '' } })
-   
+    content.onChange({ target: { value: "" } })
   }
- 
+
   const handlePersonSubmit = (event) => {
     event.preventDefault()
-    personService.create({ name: name.value, number: number.value})
-    name.onChange({ target: { value: '' } })
-    number.onChange({ target: { value: '' } })
-    
+    personService.create({ name: name.value, number: number.value })
+    name.onChange({ target: { value: "" } })
+    number.onChange({ target: { value: "" } })
   }
 
   return (
@@ -48,15 +43,21 @@ const App = () => {
         <input {...content} />
         <button>create</button>
       </form>
-      {notes.map(n => <p key={n.id}>{n.content}</p>)}
+      {notes.map((n) => (
+        <p key={n.id}>{n.content}</p>
+      ))}
 
       <h2>persons</h2>
       <form onSubmit={handlePersonSubmit}>
-        name <input {...name} /> <br/>
+        name <input {...name} /> <br />
         number <input {...number} />
         <button>create</button>
       </form>
-      {persons.map(n => <p key={n.id}>{n.name} {n.number}</p>)}
+      {persons.map((n) => (
+        <p key={n.id}>
+          {n.name} {n.number}
+        </p>
+      ))}
     </div>
   )
 }
