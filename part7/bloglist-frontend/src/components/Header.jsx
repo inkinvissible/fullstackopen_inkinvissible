@@ -1,9 +1,14 @@
-import PropTypes from 'prop-types'
-const Header = ({ titleDisplay, titleContent, pDisplay, pContent }) => {
+import PropTypes from "prop-types"
+
+const Header = ({ titleDisplay, titleContent}) => {
+  
   return (
     <>
-      <h1 style={titleDisplay !== null ? { display: titleDisplay } : {}}>{titleContent}</h1>
-      <p style={pDisplay !== null ? { display: pDisplay } : {}}>{pContent}</p>
+      <h1 className="text-3xl m-4 text-center" style={titleDisplay !== null ? { display: titleDisplay } : {}}>
+        {titleContent}
+      </h1>
+      <p></p>
+      
     </>
   )
 }
@@ -11,7 +16,6 @@ const Header = ({ titleDisplay, titleContent, pDisplay, pContent }) => {
 Header.propTypes = {
   titleDisplay: PropTypes.string,
   titleContent: PropTypes.string.isRequired,
-  pDisplay: PropTypes.string,
-  pContent: PropTypes.string,
+  
 }
 export default Header

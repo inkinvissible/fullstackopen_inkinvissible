@@ -1,56 +1,51 @@
 import { useState } from 'react'
 import blogService from '../services/blogs'
+import { useDispatch, useSelector } from 'react-redux'
+import { setNotification } from '../reducers/notificationReducer'
+import { addLike, removeBlog } from '../reducers/blogReducer'
+import { useParams } from 'react-router-dom'
+import Comments from './Comments'
 
-const Blog = ({ blog, updateBlog, notificationRef, user }) => {
-  const [visible, setVisible] = useState(false)
-  const toggleVisibility = () => {
-    setVisible(!visible)
+
+const Blog = ({blogs, updateBlog, user }) => {
+  
+  const dispatch = useDispatch()
+  const { id } = useParams()
+  
+  const blog = blogs.find(blog => blog.id === id)
+  if (!blog) {
+    return <div>Loading...</div>
   }
-  const hide = {
-    display: 'none'
-  }
-  const show = {
-    border: '3px solid black',
-    borderRadius: '7px',
-    padding: '5px',
-    marginBottom: 5
-  }
+
+  
+
+  
   const boxStyling = {
     border: '3px solid black',
     borderRadius: '4px',
     padding: '5px',
     marginTop: 10
   }
-  const addLike = async () => {
+
+  const handleAddLike = async () => {
     try {
-      const updatedBlog = { ...blog, likes: blog.likes + 1 }
-      const response = await blogService.update(blog.id, updatedBlog)
-      updateBlog(response, 'updateLikes')
-      notificationRef.current.setNotification(`You liked : ${response.title}`)
-      setTimeout(() => {
-        notificationRef.current.setNotification(null)
-      }, 5000)
+      const updatedBlog = dispatch(addLike(blog))
+      dispatch(setNotification(`You voted ${blog.title}`, 5000))
+      
     } catch (e) {
-      notificationRef.current.setErrorNotification(e)
-      setTimeout(() => {
-        notificationRef.current.setErrorNotification(null)
-      }, 5000)
+      console.log(e)
+      dispatch(setNotification(`An error has ocurred: ${e}`, 5000))
+      
     }
   }
-  const removeBlog = async () => {
+  const handleRemoveBlog = async () => {
     if (window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
       try {
-        await blogService.deleteBlog(blog.id)
-        updateBlog(blog.id, 'delete')
-        notificationRef.current.setNotification('Blog successfully deleted')
-        setTimeout(() => {
-          notificationRef.current.setNotification(null)
-        }, 5000)
+        dispatch(removeBlog(blog.id))
+        dispatch(setNotification(`Successfully removed ${blog.title}`, 5000))
       } catch (e) {
-        notificationRef.current.setErrorNotification(e)
-        setTimeout(() => {
-          notificationRef.current.setErrorNotification(null)
-        }, 5000)
+        console.log(e)
+        dispatch(setNotification(`Could not remove ${blog.title}. ${e}`, 5000))
       }
     }
 
@@ -58,17 +53,17 @@ const Blog = ({ blog, updateBlog, notificationRef, user }) => {
 
   return (
     < div style={boxStyling} >
-      <p className='blogTitleAuthor'>{blog.title} {blog.author} <button  onClick={toggleVisibility}>{visible ? 'hide' : 'show'}</button></p>
-      <div className='blogDetails' style={visible ? show : hide}>
+      <p className='blogTitleAuthor text-2xl capitalize'>{blog.title} {blog.author} </p>
         <ul>
-          <li>URL: {blog.url}</li>
-          <li>Likes: {blog.likes}  <button data-testid='likeBtn' className='likeBtn' onClick={addLike}>like</button></li>
-          <li>Author: {blog.author}</li>
+          <li className='m-2'>URL: {blog.url}</li>
+          <li className='m-2'>Likes: {blog.likes}  <button data-testid='likeBtn' className='btn' onClick={handleAddLike}>like</button></li>
+          <li className='m-2'>Author: {blog.author}</li>
         </ul>
-        {user.username === blog.author ? <button onClick={removeBlog}>remove</button> : ''}
-
+        {user.username === blog.user.username ? <button className='btnDanger' onClick={handleRemoveBlog}>remove</button> : ''}
+        
+      
+        <Comments id={id} blog={blog}/>
       </div>
-    </div >
   )
 }
 
