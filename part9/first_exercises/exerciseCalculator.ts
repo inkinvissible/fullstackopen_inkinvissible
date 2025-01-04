@@ -9,30 +9,52 @@ interface Result {
 }
 
 interface initialValues {
-    hours: number[],
-    objective: number
+  hours: number[];
+  objective: number;
 }
 
 const parseArgs = (args: string[]): initialValues => {
-    if (args.length < 12) throw new Error("Not arguments");
-  
-    const objective = Number(args[2]);
-    const hours = args.filter((_, index) => index >= 3).map(Number);
-  
-    if (!isNaN(objective) && (!hours.some(isNaN))) {
-      return {
-        hours: hours,
-        objective: objective
-      };
-    } else {
-      throw new Error("The values were not numbers");
-    }
-  };
+  if (args.length < 12) throw new Error("Not arguments");
 
-const calculateExcercise = (hours: number[], objective: number): Result => {
-  console.log(hours);
+  const objective = Number(args[2]);
+  const hours = args.filter((_, index) => index >= 3).map(Number);
+
+  if (!isNaN(objective) && !hours.some(isNaN)) {
+    return {
+      hours: hours,
+      objective: objective,
+    };
+  } else {
+    throw new Error("The values were not numbers");
+  }
+};
+
+export const parseQueryExercise = (
+  hours: number[],
+  objective: number
+): initialValues => {
   
-    const sumHours = hours.reduce((acu, val) => acu + val, 0);
+  if ((!objective) || (!hours)){
+    throw new Error("Missing paramters");
+  }
+
+  if(!isNaN(objective) && (!hours.some(isNaN))){
+    return{
+      hours: hours,
+      objective: objective
+    }
+  }else{
+    throw new Error("The values were not numbers");
+  }
+};
+
+export const calculateExcercise = (
+  hours: number[],
+  objective: number
+): Result => {
+  console.log(hours);
+
+  const sumHours = hours.reduce((acu, val) => acu + val, 0);
   const periodLength = hours.length;
   const trainingDays = periodLength - hours.filter((x) => x == 0).length;
   const average = sumHours / periodLength;
@@ -86,16 +108,13 @@ const calculateExcercise = (hours: number[], objective: number): Result => {
   }
 };
 
-
-
 try {
-    const { hours, objective } = parseArgs(process.argv);
-    console.log(calculateExcercise(hours, objective));
-    
-  } catch (error: unknown) {
-    let errorMessage = 'Something bad happened.'
-    if (error instanceof Error) {
-      errorMessage += ' Error: ' + error.message;
-    }
-    console.log(errorMessage);
+  const { hours, objective } = parseArgs(process.argv);
+  console.log(calculateExcercise(hours, objective));
+} catch (error: unknown) {
+  let errorMessage = "Something bad happened.";
+  if (error instanceof Error) {
+    errorMessage += " Error: " + error.message;
   }
+  console.log(errorMessage);
+}

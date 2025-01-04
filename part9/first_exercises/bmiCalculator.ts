@@ -19,7 +19,23 @@ const parseArg = (args: string[]): heightWeight => {
   }
 };
 
-const calculateBmi = (height: number, weight: number): string => {
+export const parseQuery = (
+  queryHeight: string,
+  queryWeight: string
+): heightWeight => {
+  const height = Number(queryHeight);
+  const weight = Number(queryWeight);
+  if (!isNaN(height) && !isNaN(weight)) {
+    return {
+      height,
+      weight,
+    };
+  } else {
+    throw new Error("The values were not numbers");
+  }
+};
+
+export const calculateBmi = (height: number, weight: number): string => {
   const bmi = weight / height ** 2;
   if (bmi <= 18.5 && bmi >= 0) {
     return "underweight";
