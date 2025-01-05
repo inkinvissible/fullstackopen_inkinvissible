@@ -1,0 +1,10 @@
+POST http://localhost:3001/api/patients
+Content-Type: application/json
+
+{
+    "name": "John Macintosh",
+    "dateOfBirth": "1991-07-07",
+    "ssn": "870786-122X",
+    "gender": "male",
+    "occupation": "Florida city cop"
+}
