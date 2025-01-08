@@ -11,7 +11,7 @@ import {
   Box,
 } from "@mui/material";
 import patients from "../services/patients";
-import { Patient } from "../types";
+import { Patient, Entry } from "../types";
 import { useParams } from "react-router-dom";
 
 const EntryForm = ({
@@ -57,14 +57,14 @@ const EntryForm = ({
     setHealthCheckRating(0);
   };
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     try {
       if (!id) {
         console.error("Patient ID is undefined.");
         return;
       }
-      patients.createEntry(id, {
+      const response = await patients.createEntry(id, {
         description,
         date,
         specialist,
@@ -79,22 +79,29 @@ const EntryForm = ({
         }),
         ...(entryType === "HealthCheck" && { healthCheckRating }),
       });
-      const updatedEntries = patient.entries?.concat({
-        description,
-        date,
-        specialist,
-        type: entryType,
-        diagnosisCodes: [selectedCode],
-        ...(entryType === "Hospital" && {
-          discharge: { criteria: hospitalCriteria },
-        }),
-        ...(entryType === "OccupationalHealthcare" && {
-          employerName,
-          sickLeave: { startDate, endDate },
-        }),
-        ...(entryType === "HealthCheck" && { healthCheckRating }),
-      });
-      setPatient({ ...patient, entries: updatedEntries });
+
+      const updatedEntries = patient.entries
+        ? patient.entries.concat(response as unknown as Entry)
+        : [response];
+      setPatient({ ...patient, entries: updatedEntries as Entry[] });
+      // Assuming the response contains the updated patient data
+      //   const updatedEntries = patient.entries?.concat({
+      //     description,
+      //     date,
+      //     specialist,
+      //     type: entryType,
+      //     diagnosisCodes: [selectedCode],
+      //     ...(entryType === "Hospital" && {
+      //       discharge: { criteria: hospitalCriteria },
+      //     }),
+      //     ...(entryType === "OccupationalHealthcare" && {
+      //       employerName,
+      //       sickLeave: { startDate, endDate },
+      //     }),
+      //     ...(entryType === "HealthCheck" && { healthCheckRating }),
+      //   });
+
+      
       cleanInputs();
     } catch (error) {
       console.error("Error creating entry:", error);
